@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project_prospecto/card_prospecto.dart';
-import 'back_gradient.dart';
+import 'components/back_gradient.dart';
 import 'card_prospecto.dart';
-import 'card_list.dart';
+import 'components/card_list.dart';
 
 class ListaProspectosStaFul extends StatefulWidget {
   @override

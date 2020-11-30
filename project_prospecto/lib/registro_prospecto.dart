@@ -4,11 +4,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:project_prospecto/back_gradient.dart';
-import 'load_file.dart';
+import 'package:project_prospecto/components/back_gradient.dart';
+import 'components/load_file.dart';
 import 'file_picker.dart';
-import 'button_guardar.dart';
-import 'button_salir.dart';
+import 'components/button_guardar.dart';
+import 'components/button_salir.dart';
 
 class RegistroProspecto extends StatefulWidget {
   @override
@@ -94,7 +94,7 @@ class _RegistroProspectoState extends State<RegistroProspecto> {
       telefono,
       correo;
 
-  Map documentos = {"Pruerba": "Azúl"};
+  Map documentos = {"Prueba": "Azúl"};
 
   sendProspecto() async {
     http.Response response = await http.post(

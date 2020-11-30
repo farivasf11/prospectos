@@ -1,8 +1,18 @@
-import 'package:flutter/material.dart';
-import 'components/back_gradient.dart';
+import 'dart:convert';
 
-class CardProspecto extends StatelessWidget {
-  String nombre,
+import 'package:flutter/material.dart';
+import 'package:project_prospecto/components/button_aprobar.dart';
+import 'package:project_prospecto/components/button_rechazar.dart';
+import 'components/back_gradient.dart';
+import 'components/button_guardar.dart';
+import 'components/button_salir.dart';
+import 'package:http/http.dart' as http;
+
+class EvaluarProspecto extends StatelessWidget {
+  TextEditingController comentariosController = new TextEditingController();
+
+  String id,
+      nombre,
       apellidoPaterno,
       apellidoMaterno,
       calle,
@@ -13,7 +23,8 @@ class CardProspecto extends StatelessWidget {
       telefono,
       correo,
       estado;
-  CardProspecto(
+  EvaluarProspecto(
+      this.id,
       this.nombre,
       this.apellidoPaterno,
       this.apellidoMaterno,
@@ -25,20 +36,39 @@ class CardProspecto extends StatelessWidget {
       this.telefono,
       this.correo,
       this.estado);
+  String nuevoEstado;
+  actualizarProspecto() async {
+    http.Response response = await http.put(
+      "http://10.0.2.2:4000/api/prospectos/$id",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "estado": nuevoEstado,
+        "comentarios": comentariosController.text,
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("Prospecto actualizado correctamente");
+    } else {
+      throw Exception('Error al insertar el prospecto');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        isExtended: true,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        icon: Icon(Icons.arrow_back),
-        label: Text('Volver'),
-        backgroundColor: Colors.green,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      //   isExtended: true,
+      //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      //   icon: Icon(Icons.arrow_back),
+      //   label: Text('Volver'),
+      //   backgroundColor: Colors.green,
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Stack(
         children: [
           Container(
@@ -367,10 +397,50 @@ class CardProspecto extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(15.0),
+                    child: TextFormField(
+                      maxLines: 8,
+                      style: TextStyle(fontSize: 20.0),
+                      controller: comentariosController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: "Ingrese sus comentarios",
+                        hintStyle: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
                 ],
               )),
-          GradientBack(nombre + " " + apellidoPaterno)
+          GradientBack(nombre + " " + apellidoPaterno),
+          Positioned(
+              bottom: 15,
+              right: 15,
+              child: Row(
+                children: [
+                  ButtonAprobar(
+                    onPressed: () {
+                      nuevoEstado = "Aprobado";
+                      actualizarProspecto();
+                    },
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 15.0),
+                    child: ButtonRechazar(
+                      onPressed: () {
+                        nuevoEstado = "Rechazado";
+                        actualizarProspecto();
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 15.0),
+                    child: ButtonSalir(
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );

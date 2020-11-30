@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'indicador_status.dart';
+import '../indicador_status.dart';
 
 class CardList extends StatelessWidget {
   String nombre, apellido, estado;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'load_file.dart';
+import 'components/load_file.dart';
 
 class FilePick extends StatefulWidget {
   @override
